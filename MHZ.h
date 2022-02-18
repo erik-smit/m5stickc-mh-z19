@@ -1,3 +1,6 @@
+/* imported from: https://github.com/tobiasschuerg/MH-Z-CO2-Sensors/tree/4e868c9cee8a86066a1287c9f2b46fee7e293e93 */
+
+
 /* MHZ library
 
     By Tobias Schürg
@@ -10,8 +13,6 @@
 #else
 #include "WProgram.h"
 #endif
-
-#include <SoftwareSerial.h>
 
 // types of sensors.
 extern const int MHZ14A;
@@ -28,12 +29,13 @@ extern const int STATUS_NOT_READY;
 
 class MHZ {
  public:
-  MHZ(uint8_t rxpin, uint8_t txpin, uint8_t pwmpin, uint8_t type);
-  MHZ(uint8_t rxpin, uint8_t txpin, uint8_t type);
-  MHZ(uint8_t pwmpin, uint8_t type);
+//  MHZ(uint8_t rxpin, uint8_t txpin, uint8_t pwmpin, uint8_t type);
+//  MHZ(uint8_t rxpin, uint8_t txpin, uint8_t type);
+//  MHZ(uint8_t pwmpin, uint8_t type);
   MHZ(Stream * serial, uint8_t pwmpin, uint8_t type);
+  MHZ(Stream & serial, uint8_t pwmpin, uint8_t type);
   MHZ(Stream * serial, uint8_t type);
-
+  MHZ(Stream & serial, uint8_t type);
   void setDebug(boolean enable);
 
   boolean isPreHeating();

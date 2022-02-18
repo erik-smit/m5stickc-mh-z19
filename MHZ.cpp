@@ -1,3 +1,5 @@
+/* imported from: https://github.com/tobiasschuerg/MH-Z-CO2-Sensors/tree/4e868c9cee8a86066a1287c9f2b46fee7e293e93 */
+
 /* MHZ library
 
     By Tobias Schürg
@@ -27,36 +29,49 @@ const int STATUS_NOT_READY = -5;
 const int STATUS_PWM_NOT_CONFIGURED = -6;
 const int STATUS_SERIAL_NOT_CONFIGURED = -7;
 
-MHZ::MHZ(uint8_t rxpin, uint8_t txpin, uint8_t pwmpin, uint8_t type) {
-  SoftwareSerial * ss = new SoftwareSerial(rxpin, txpin);
-  _pwmpin = pwmpin;
-  _type = type;
-
-  ss->begin(9600);
-  _serial = ss;
-}
-
-MHZ::MHZ(uint8_t rxpin, uint8_t txpin, uint8_t type) {
-  SoftwareSerial * ss = new SoftwareSerial(rxpin, txpin);
-  _type = type;
-
-  ss->begin(9600);
-  _serial = ss;
-
-  PwmConfigured = false;
-}
-
-MHZ::MHZ(uint8_t pwmpin, uint8_t type) {
-  _pwmpin = pwmpin;
-  _type = type;
-
-  SerialConfigured = false;
-}
+//MHZ::MHZ(uint8_t rxpin, uint8_t txpin, uint8_t pwmpin, uint8_t type) {
+//  SoftwareSerial * ss = new SoftwareSerial(rxpin, txpin);
+//  _pwmpin = pwmpin;
+//  _type = type;
+//
+//  ss->begin(9600);
+//  _serial = ss;
+//}
+//
+//MHZ::MHZ(uint8_t rxpin, uint8_t txpin, uint8_t type) {
+//  SoftwareSerial * ss = new SoftwareSerial(rxpin, txpin);
+//  _type = type;
+//
+//  ss->begin(9600);
+//  _serial = ss;
+//
+//  PwmConfigured = false;
+//}
+//
+//MHZ::MHZ(uint8_t pwmpin, uint8_t type) {
+//  _pwmpin = pwmpin;
+//  _type = type;
+//
+//  SerialConfigured = false;
+//}
 
 MHZ::MHZ(Stream * serial, uint8_t pwmpin, uint8_t type) {
   _serial = serial;
   _pwmpin = pwmpin;
   _type = type;
+}
+
+MHZ::MHZ(Stream & serial, uint8_t pwmpin, uint8_t type) {
+  _serial = &serial;
+  _pwmpin = pwmpin;
+  _type = type;
+}
+
+MHZ::MHZ(Stream & serial, uint8_t type) {
+  _serial = &serial;
+  _type = type;
+
+  PwmConfigured = false;
 }
 
 MHZ::MHZ(Stream * serial, uint8_t type) {
