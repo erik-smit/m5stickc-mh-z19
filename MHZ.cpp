@@ -109,18 +109,26 @@ boolean MHZ::isPreHeating() {
 boolean MHZ::isReady() {
   if (isPreHeating()) {
     return false;
-  } else if (_type == MHZ14A) {
-    return lastRequest < millis() - MHZ14A_RESPONSE_TIME;
-  } else if (_type == MHZ19B) {
-    return lastRequest < millis() - MHZ19B_RESPONSE_TIME;
-  } else if (_type == MHZ19C) {
-    return lastRequest < millis() - MHZ19C_RESPONSE_TIME;
-  } else {
-    Serial.print(F("MHZ::isReady() => UNKNOWN SENSOR \""));
-    Serial.print(_type);
-    Serial.println(F("\""));
-    return true;
   }
+  return true;
+//  } else if (_type == MHZ14A) {
+//    return lastRequest < millis() - MHZ14A_RESPONSE_TIME;
+//  } else if (_type == MHZ19B) {
+//    return lastRequest < millis() - MHZ19B_RESPONSE_TIME;
+//  } else if (_type == MHZ19C) {
+//    bool isReady = lastRequest < millis() - MHZ19C_RESPONSE_TIME;
+//    if (debug && !isReady) {
+//      unsigned long millertime = millis() - MHZ19C_RESPONSE_TIME;
+//      Serial.println(F("not ready because last request too soon"));
+//      Serial.printf("lastrequest: %d, millis: %d\n", lastRequest, millertime);
+//    }
+//    return isReady;
+//  } else {
+//    Serial.print(F("MHZ::isReady() => UNKNOWN SENSOR \""));
+//    Serial.print(_type);
+//    Serial.println(F("\""));
+//    return true;
+//  }
 }
 
 int MHZ::readCO2UART() {
