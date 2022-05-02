@@ -1,6 +1,22 @@
 #include <M5StickC.h>
 #include "MHZ.h"
 
+#define DEBUG 1
+
+#ifdef DEBUG
+#define D_SerialBegin(...) Serial.begin(__VA_ARGS__)
+#define D_print(...)    Serial.print(__VA_ARGS__)
+#define D_write(...)    Serial.print(__VA_ARGS__)
+#define D_println(...)  Serial.println(__VA_ARGS__)
+#define D_printf(...)  Serial.printf(__VA_ARGS__)
+#else
+#define D_SerialBegin(...)
+#define D_print(...)
+#define D_write(...)
+#define D_println(...)
+#define D_printf(...)
+#endif
+
 // pin for pwm reading
 #define CO2_IN G36
 
@@ -11,8 +27,8 @@
 MHZ co2(Serial2, CO2_IN, MHZ19C);
 
 void setup() {
-  Serial.begin(115200);
-  Serial.println("MHZ 19C");
+  D_SerialBegin(115200);
+  D_println("MHZ 19C");
 
   M5.begin();
   M5.Lcd.setRotation(0);
@@ -24,18 +40,20 @@ void setup() {
   delay(100);
 
   // enable debug to get addition information
+#ifdef DEBUG
   co2.setDebug(true);
+#endif
 
   if (co2.isPreHeating()) {
     M5.Lcd.print("Preheating");
-    Serial.print("Preheating");
+    D_print("Preheating");
     
     while (co2.isPreHeating()) {
-      Serial.print(".");
+      D_print(".");
       M5.Lcd.print(".");
       delay(5000);
     }
-    Serial.println();
+    D_println();
   }
 
   M5.Lcd.fillScreen(BLACK);  
@@ -45,35 +63,30 @@ void loop() {
   M5.update(); // need to call update()
   M5.Lcd.setCursor(0, 2, 1);
     
-  Serial.print("\n----- Time from start: ");
-  Serial.print(millis() / 1000);
-  Serial.println(" s");
+  D_print("\n----- Time from start: ");
+  D_print(millis() / 1000);
+  D_println(" s");
 
   int ppm_uart = co2.readCO2UART();
-  Serial.print("PPMuart: ");
+  D_print("PPMuart: ");
 
   if (ppm_uart > 0) {
-    Serial.print(ppm_uart);
+    D_print(ppm_uart);
   } else {
-    Serial.print("n/a");
+    D_print("n/a");
   }
 
   M5.Lcd.printf("CO2: %.4d ppm\r\n", ppm_uart);
-  
-//  int ppm_pwm = co2.readCO2PWM();
-//  Serial.print(", PPMpwm: ");
-//  Serial.print(ppm_pwm);
-//  M5.Lcd.printf("PPMpwm : %.4d ppm\r\n", ppm_pwm);
 
   int temperature = co2.getLastTemperature();
-  Serial.print(", Temperature: ");
+  D_print(", Temperature: ");
 
   if (temperature > 0) {
-    Serial.println(temperature);
+    D_println(temperature);
   } else {
-    Serial.println("n/a");
+    D_println("n/a");
   }
 
-  Serial.println("\n------------------------------");
+  D_println("\n------------------------------");
   delay(5000);
 }
